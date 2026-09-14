@@ -19,5 +19,6 @@ export const fetchWeatherThreeHours = async (latitude: number, longitude: number
         time: entry.time,
         temperature: entry.screenTemperature,
         probOfPrecipitation: entry.probOfPrecipitation,
+        significantWeatherCode: entry.significantWeatherCode,
     }));
 }
