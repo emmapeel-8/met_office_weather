@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node main.ts"
+    "start": "node main.ts",
+    "test": "node --test tests/"
   },
   "dependencies": {
     "dotenv": "^16.4.5"

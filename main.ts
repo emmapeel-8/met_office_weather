@@ -5,17 +5,6 @@ import { fetchPostcode} from "./api/postcodes.ts";
 import type { WeatherResponse } from "./types/weather_types.ts";
 import type { PostcodeInfo } from "./types/postcode_types.ts";
 
-async function promptNumber(rl: ReturnType<typeof createInterface>, question: string): Promise<number> {
-    while (true) {
-        const answer = await rl.question(question);
-        const value = Number(answer);
-        if (!Number.isNaN(value)) {
-            return value;
-        }
-        console.log("Please enter a valid number.");
-    }
-}
-
 function getNextThreeHours(data: WeatherResponse[]): WeatherResponse[] {
     const now = new Date();
     return data.filter((entry) => new Date(entry.time) >= now).slice(0, 3);
@@ -35,8 +24,6 @@ async function main() {
     const rl = createInterface({ input: process.stdin, output: process.stdout });
 
     try {
-        //const latitude = await promptNumber(rl, "Latitude: ");
-        //const longitude = await promptNumber(rl, "Longitude: ");
         const postcode : string = await rl.question("Enter postcode: ");
 
         const postcode_data: PostcodeInfo = await fetchPostcode(postcode)
@@ -47,6 +34,8 @@ async function main() {
         for (const entry of nextThreeHours) {
             console.log(formatWeather(entry));
         }
+    } catch (error: any) {
+        console.log(error.message);
     } finally {
         rl.close();
     }
