@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node main.ts",
+    "server": "node server.ts",
     "test": "node --test tests/"
   },
   "dependencies": {
