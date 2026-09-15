@@ -1,6 +1,6 @@
 import { fetchWeatherThreeHours } from "./api/metOffice.ts";
 import { fetchPostcode } from "./api/postcodes.ts";
-import type { WeatherResponse } from "./types/weather_types.ts";
+import type { WeatherResponse, WeatherReport } from "./types/weather_types.ts";
 
 const WEATHER_CODE_DESCRIPTIONS: Record<number, string> = {
     [-1]: "Trace rain",
@@ -49,16 +49,6 @@ export const getNextThreeHours = (data: WeatherResponse[]): WeatherResponse[] =>
 export const needUmbrella = (probOfPrecipitation: number): string | null => {
     return probOfPrecipitation > 10 ? "Bring an umbrella!" : null;
 }
-
-export type EnrichedWeather = WeatherResponse & {
-    description: string;
-    umbrella: string | null;
-};
-
-export type WeatherReport = {
-    location: string;
-    forecast: EnrichedWeather[];
-};
 
 export const getWeatherReport = async (postcode: string): Promise<WeatherReport> => {
     const postcodeData = await fetchPostcode(postcode);

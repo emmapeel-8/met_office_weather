@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { createInterface } from "node:readline/promises";
-import { getWeatherReport, type EnrichedWeather } from "./weatherReport.ts";
+import { getWeatherReport } from "./weatherReport.ts";
+import type { EnrichedWeather } from "./types/weather_types.ts";
 
 const formatWeather = (entry: EnrichedWeather): string => {
     const time = new Date(entry.time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });

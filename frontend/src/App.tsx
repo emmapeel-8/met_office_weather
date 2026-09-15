@@ -1,26 +1,26 @@
 import React, {useState} from 'react';
 import {Banner} from "./assets/Banner.tsx";
-import {getWeatherReport} from "./api/weather.ts";
+import {getWeatherReport, type WeatherReport} from "./api/weather.ts";
 
-async function getForecast(postcode: string): Promise<string> {
-  if (postcode === "") return "";
-
-  try {
-    const report = await getWeatherReport(postcode);
-    return JSON.stringify(report, null, 4);
-  } catch (error: any) {
-    return error.message;
-  }
-}
+const cellStyle: React.CSSProperties = { padding: "8px 16px", textAlign: "center" };
 
 function App(): React.ReactElement {
   const [postcode, setPostcode] = useState<string>("");
-  const [tableData, setTableData] = useState<string>("");
+  const [report, setReport] = useState<WeatherReport | null>(null);
+  const [error, setError] = useState<string>("");
 
   async function formHandler(event: React.FormEvent<HTMLFormElement>): Promise<void> {
-    event.preventDefault(); // to stop the form refreshing the page when it submits
-    const data = await getForecast(postcode);
-    setTableData(data);
+    event.preventDefault();
+    if (postcode === "") return;
+
+    try {
+      const result = await getWeatherReport(postcode);
+      setReport(result);
+      setError("");
+    } catch (err: any) {
+      setReport(null);
+      setError(err.message);
+    }
   }
   function updatePostcode(data: React.ChangeEvent<HTMLInputElement>): void {
     setPostcode(data.target.value)
@@ -32,7 +32,34 @@ function App(): React.ReactElement {
       <input type="text" id="postcodeInput" onChange={updatePostcode}/>
       <input type="submit" value="Submit"/>
     </form>
-    {JSON.stringify(tableData, null, 4) /* this will just render the string - try creating a table 'dynamically'! */}
+    {error && <p role="alert">{error}</p>}
+    {report && (
+      <section>
+        <h2>Weather report for {report.location}</h2>
+        <table style={{ margin: "16px auto 0", borderCollapse: "collapse" }}>
+          <thead>
+            <tr>
+              <th style={cellStyle}>Time</th>
+              <th style={cellStyle}>Conditions</th>
+              <th style={cellStyle}>Temperature</th>
+              <th style={cellStyle}>Chance of rain</th>
+              <th style={cellStyle}>Umbrella</th>
+            </tr>
+          </thead>
+          <tbody>
+            {report.forecast.map((entry) => (
+              <tr key={entry.time}>
+                <td style={cellStyle}>{new Date(entry.time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</td>
+                <td style={cellStyle}>{entry.description}</td>
+                <td style={cellStyle}>{entry.temperature}°C</td>
+                <td style={cellStyle}>{entry.probOfPrecipitation}%</td>
+                <td style={cellStyle}>{entry.umbrella ?? "No umbrella needed"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+    )}
   </>;
 }
 export default App;
