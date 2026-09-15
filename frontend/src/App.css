@@ -82,6 +82,7 @@
     margin: 16px auto 0;
     border-collapse: collapse;
     border: 1px solid var(--border);
+    color: black;
 }
 
 .weather-table th,
