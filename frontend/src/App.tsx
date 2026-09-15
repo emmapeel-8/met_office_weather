@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Banner} from "./assets/Banner.tsx";
 import {getWeatherReport, type WeatherReport} from "./api/weather.ts";
+import {getRandomPostcode} from "./api/postcode.ts";
 import "./App.css"
 
 const cellStyle: React.CSSProperties = { padding: "8px 16px", textAlign: "center" };
@@ -11,6 +12,7 @@ function App(): React.ReactElement {
   const [report, setReport] = useState<WeatherReport | null>(null);
   const [error, setError] = useState<string>("");
   const [significantWeatherCode, setSignificantWeatherCode] = useState<number>(1);
+  const [postcodeRandom, setPostcodeRandom] = useState<string>();
 
   async function formHandler(event: React.FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
@@ -32,24 +34,57 @@ function App(): React.ReactElement {
   function updateHours(data: React.ChangeEvent<HTMLInputElement>): void {
     setHours(data.target.valueAsNumber)
   }
+  async function selectRandomPostcode(): Promise<void> {
+    setReport(null);
+    try {
+      const info = await getRandomPostcode();
+      setPostcodeRandom(info.postcode);
+      setPostcode(info.postcode);
+    } catch (err: any) {
+      setError(err.message);
+    }
+  }
+  function selectManualPostcode(): void {
+    setPostcodeRandom("");
+    setPostcode("");
+    setReport(null);
+  }
   return <>
     <Banner significantWeatherCode={significantWeatherCode}></Banner>
     <div className="banner-content">
       <h1>Met Office Weather</h1>
       <p>Live local forecasts, wherever you are</p>
     </div>
-    <form action="" onSubmit={formHandler}>
-      <label htmlFor="postcodeInput"> Postcode: </label>
-      <input type="text" id="postcodeInput" onChange={updatePostcode}/>
-      <label htmlFor="hoursInput"> Hours: </label>
-      <input type="number" id="hoursInput" min={1} step={1} value={hours} onChange={updateHours} style={{ width: "2em" }}/>
-      <input type="submit" value="Submit"/>
-    </form>
-    {error && <p role="alert">{error}</p>}
+    <div className="postcode-picker">
+      <button
+        type="button"
+        className={postcodeRandom ? "active" : ""}
+        onClick={selectRandomPostcode}
+      >
+        Get random postcode
+      </button>
+      <button
+        type="button"
+        className={postcodeRandom === "" ? "active" : ""}
+        onClick={selectManualPostcode}
+      >
+        Input manual postcode (boring)
+      </button>
+    </div>
+    {postcodeRandom !== undefined && (
+      <form className="weather-form" action="" onSubmit={formHandler}>
+        <label htmlFor="postcodeInput"> Postcode: </label>
+        <input type="text" id="postcodeInput" placeholder={postcodeRandom} value={postcode} onChange={updatePostcode}/>
+        <label htmlFor="hoursInput"> Hours: </label>
+        <input type="number" id="hoursInput" min={1} step={1} value={hours} onChange={updateHours} style={{ width: "2em" }}/>
+        <input type="submit" value="Submit"/>
+      </form>
+    )}
+    {error && <p role="alert" className="error-message">{error}</p>}
     {report && (
-      <section>
+      <section className="weather-report">
         <h2>Weather report for {report.location}</h2>
-        <table style={{ margin: "16px auto 0", borderCollapse: "collapse" }}>
+        <table className="weather-table">
           <thead>
             <tr>
               <th style={cellStyle}>Time</th>

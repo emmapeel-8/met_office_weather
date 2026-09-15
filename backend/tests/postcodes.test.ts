@@ -10,6 +10,7 @@ test("fetchPostcode returns location info for a valid postcode", async (t) => {
     t.mock.method(globalThis, "fetch", mockFetchJson({
         status: 200,
         result: {
+            postcode: "SW1A 1AA",
             parliamentary_constituency: "Cities of London and Westminster",
             latitude: 51.50101,
             longitude: -0.141563,
@@ -19,6 +20,7 @@ test("fetchPostcode returns location info for a valid postcode", async (t) => {
     const result = await fetchPostcode("SW1A1AA");
 
     assert.deepEqual(result, {
+        postcode: "SW1A 1AA",
         parliamentary_constituency: "Cities of London and Westminster",
         latitude: 51.50101,
         longitude: -0.141563,
@@ -39,6 +41,7 @@ test("fetchPostcode handles a postcode with spaces", async (t) => {
     const fetchMock = t.mock.method(globalThis, "fetch", mockFetchJson({
         status: 200,
         result: {
+            postcode: "SW1A 1AA",
             parliamentary_constituency: "Cities of London and Westminster",
             latitude: 51.50101,
             longitude: -0.141563,
@@ -52,6 +55,7 @@ test("fetchPostcode handles a postcode with spaces", async (t) => {
         "https://api.postcodes.io/postcodes/SW1A 1AA",
     );
     assert.deepEqual(result, {
+        postcode: "SW1A 1AA",
         parliamentary_constituency: "Cities of London and Westminster",
         latitude: 51.50101,
         longitude: -0.141563,

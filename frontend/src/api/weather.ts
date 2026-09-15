@@ -24,3 +24,4 @@ export const getWeatherReport = async (postcode: string, hours: number): Promise
 
     return data;
 }
+

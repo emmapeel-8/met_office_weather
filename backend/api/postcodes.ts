@@ -13,6 +13,7 @@ export const fetchPostcode = async (postcode: string): Promise<PostcodeInfo> => 
     }
 
     return {
+        postcode: data.result.postcode,
         parliamentary_constituency: data.result.parliamentary_constituency,
         latitude: data.result.latitude,
         longitude: data.result.longitude,
@@ -32,6 +33,7 @@ export const fetchRandomPostcode = async (): Promise<PostcodeInfo> => {
     }
 
     return {
+        postcode: data.result.postcode,
         parliamentary_constituency: data.result.parliamentary_constituency,
         latitude: data.result.latitude,
         longitude: data.result.longitude,

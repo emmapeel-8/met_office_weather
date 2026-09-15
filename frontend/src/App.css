@@ -16,3 +16,80 @@
     font-size: 16px;
     opacity: 0.9;
 }
+
+:root {
+    --form-accent: #e3f1fd;
+    --form-accent-bg: rgb(121 130 138 / 0.8);
+    --form-accent-border: rgb(42 45 48 / 0.5);
+}
+
+.postcode-picker {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 24px 0;
+}
+
+.postcode-picker button,
+.weather-form input[type="submit"] {
+    font: inherit;
+    font-size: 15px;
+    padding: 8px 18px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text-h);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.postcode-picker button:hover,
+.weather-form input[type="submit"]:hover {
+    border-color: var(--form-accent-border);
+    color: var(--form-accent);
+}
+
+.postcode-picker button.active {
+    border-color: black;
+    background: var(--form-accent-bg);
+    color: black;
+}
+
+.weather-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px 16px;
+    margin: 16px 0;
+    color: black;
+}
+
+.weather-form label {
+    font-size: 15px;
+}
+
+.error-message {
+    color: #d1435b;
+    margin: 16px 0;
+}
+
+.weather-report {
+    margin: 32px 0;
+}
+
+.weather-table {
+    margin: 16px auto 0;
+    border-collapse: collapse;
+    border: 1px solid var(--border);
+}
+
+.weather-table th,
+.weather-table td {
+    border-bottom: 1px solid var(--border);
+}
+
+.weather-table thead th {
+    background: var(--code-bg);
+    font-weight: 500;
+}
