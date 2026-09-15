@@ -1,0 +1,18 @@
+.banner-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.banner-content h1 {
+    margin: 0;
+    color: #fff;
+}
+
+.banner-content p {
+    margin: 8px 0 0;
+    font-size: 16px;
+    opacity: 0.9;
+}
