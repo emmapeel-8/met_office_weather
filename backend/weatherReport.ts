@@ -1,4 +1,4 @@
-import { fetchWeatherThreeHours } from "./api/metOffice.ts";
+import { fetchWeatherHours } from "./api/metOffice.ts";
 import { fetchPostcode } from "./api/postcodes.ts";
 import type { WeatherResponse, WeatherReport } from "./types/weather_types.ts";
 
@@ -41,19 +41,19 @@ export const describeWeatherCode = (significantWeatherCode: number): string => {
     return WEATHER_CODE_DESCRIPTIONS[significantWeatherCode] ?? "Not available";
 }
 
-export const getNextThreeHours = (data: WeatherResponse[]): WeatherResponse[] => {
+export const getNextThreeHours = (data: WeatherResponse[], hours: number): WeatherResponse[] => {
     const now = new Date();
-    return data.filter((entry) => new Date(entry.time) >= now).slice(0, 3);
+    return data.filter((entry) => new Date(entry.time) >= now).slice(0, hours);
 }
 
 export const needUmbrella = (probOfPrecipitation: number): string | null => {
     return probOfPrecipitation > 10 ? "Bring an umbrella!" : null;
 }
 
-export const getWeatherReport = async (postcode: string): Promise<WeatherReport> => {
+export const getWeatherReport = async (postcode: string, hours: number): Promise<WeatherReport> => {
     const postcodeData = await fetchPostcode(postcode);
-    const weather = await fetchWeatherThreeHours(postcodeData.latitude, postcodeData.longitude);
-    const nextThreeHours = getNextThreeHours(weather);
+    const weather = await fetchWeatherHours(postcodeData.latitude, postcodeData.longitude);
+    const nextThreeHours = getNextThreeHours(weather, hours);
 
     return {
         location: postcodeData.parliamentary_constituency,

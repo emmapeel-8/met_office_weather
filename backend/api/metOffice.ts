@@ -1,6 +1,6 @@
 import type { WeatherResponse } from "../types/weather_types.ts";
 
-export const fetchWeatherThreeHours = async (latitude: number, longitude: number): Promise<WeatherResponse[]> => {
+export const fetchWeatherHours = async (latitude: number, longitude: number): Promise<WeatherResponse[]> => {
     const response = await fetch(`https://data.hub.api.metoffice.gov.uk/sitespecific/v0/point/hourly?latitude=${latitude}&longitude=${longitude}`, {
         headers: {
             accept: "application/json",

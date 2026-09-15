@@ -30,7 +30,7 @@ const Cloud = ({ width }: { width: number }): React.ReactElement => (
     </svg>
 );
 
-export const Banner = (weatherCode: number): React.ReactElement => {
+export const Banner = (): React.ReactElement => {
     return (
         <div className="banner">
             <div className="banner-sun" />

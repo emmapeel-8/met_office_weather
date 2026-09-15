@@ -6,6 +6,7 @@ const cellStyle: React.CSSProperties = { padding: "8px 16px", textAlign: "center
 
 function App(): React.ReactElement {
   const [postcode, setPostcode] = useState<string>("");
+  const [hours, setHours] = useState<number>(3);
   const [report, setReport] = useState<WeatherReport | null>(null);
   const [error, setError] = useState<string>("");
 
@@ -14,7 +15,7 @@ function App(): React.ReactElement {
     if (postcode === "") return;
 
     try {
-      const result = await getWeatherReport(postcode);
+      const result = await getWeatherReport(postcode, hours);
       setReport(result);
       setError("");
     } catch (err: any) {
@@ -25,11 +26,16 @@ function App(): React.ReactElement {
   function updatePostcode(data: React.ChangeEvent<HTMLInputElement>): void {
     setPostcode(data.target.value)
   }
+  function updateHours(data: React.ChangeEvent<HTMLInputElement>): void {
+    setHours(data.target.valueAsNumber)
+  }
   return <>
     <Banner />
     <form action="" onSubmit={formHandler}>
       <label htmlFor="postcodeInput"> Postcode: </label>
       <input type="text" id="postcodeInput" onChange={updatePostcode}/>
+      <label htmlFor="hoursInput"> Hours: </label>
+      <input type="number" id="hoursInput" min={1} step={1} value={hours} onChange={updateHours} style={{ width: "2em" }}/>
       <input type="submit" value="Submit"/>
     </form>
     {error && <p role="alert">{error}</p>}

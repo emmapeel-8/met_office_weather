@@ -14,7 +14,7 @@ const main = async () => {
     try {
         const postcode: string = await rl.question("Enter postcode: ");
 
-        const report = await getWeatherReport(postcode);
+        const report = await getWeatherReport(postcode, 3);
 
         console.log(`Weather report for ${report.location}:`)
         for (const entry of report.forecast) {

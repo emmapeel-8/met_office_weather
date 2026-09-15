@@ -1,12 +1,12 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { fetchWeatherThreeHours } from "../api/metOffice.ts";
+import { fetchWeatherHours } from "../api/metOffice.ts";
 
 function mockFetchJson(body: unknown): typeof fetch {
     return (async () => ({ json: async () => body })) as unknown as typeof fetch;
 }
 
-test("fetchWeatherThreeHours returns weather data for a valid latitude and longitude", async (t) => {
+test("fetchWeatherHours returns weather data for a valid latitude and longitude", async (t) => {
     t.mock.method(globalThis, "fetch", mockFetchJson({
         features: [
             {
@@ -20,7 +20,7 @@ test("fetchWeatherThreeHours returns weather data for a valid latitude and longi
         ],
     }));
 
-    const result = await fetchWeatherThreeHours(51.5, -0.1);
+    const result = await fetchWeatherHours(51.5, -0.1);
 
     assert.deepEqual(result, [
         { time: "2026-09-14T11:00Z", temperature: 20.5, probOfPrecipitation: 5, significantWeatherCode: 1 },
@@ -28,7 +28,7 @@ test("fetchWeatherThreeHours returns weather data for a valid latitude and longi
     ]);
 });
 
-test("fetchWeatherThreeHours rejects with a clear error for an invalid latitude and longitude", async (t) => {
+test("fetchWeatherHours rejects with a clear error for an invalid latitude and longitude", async (t) => {
     // Real API response shape when latitude/longitude are out of range - no `features` key.
     t.mock.method(globalThis, "fetch", mockFetchJson({
         total: 2,
@@ -41,7 +41,7 @@ test("fetchWeatherThreeHours rejects with a clear error for an invalid latitude 
     }));
 
     await assert.rejects(
-        () => fetchWeatherThreeHours(999, 999),
+        () => fetchWeatherHours(999, 999),
         { message: "Invalid latitude or longitude" },
     );
 });
