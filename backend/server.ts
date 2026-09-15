@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { createServer } from "node:http";
 import { getWeatherReport } from "./weatherReport.ts";
+import { fetchRandomPostcode } from "./api/postcodes.ts";
 
 const PORT = process.env.PORT ?? 3001;
 
@@ -8,6 +9,18 @@ const server = createServer(async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
     const url = new URL(req.url ?? "/", `http://${req.headers.host}`);
+
+    if (url.pathname === "/random-postcode") {
+        try {
+            const postcode = await fetchRandomPostcode();
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(JSON.stringify(postcode));
+        } catch (error: any) {
+            res.writeHead(400, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ error: error.message }));
+        }
+        return;
+    }
 
     if (url.pathname !== "/weather") {
         res.writeHead(404, { "Content-Type": "application/json" });
