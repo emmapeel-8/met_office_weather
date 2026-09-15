@@ -16,6 +16,7 @@ const server = createServer(async (req, res) => {
     }
 
     const postcode = url.searchParams.get("postcode");
+    const hours = Number(url.searchParams.get("hours") ?? 3);
 
     if (!postcode) {
         res.writeHead(400, { "Content-Type": "application/json" });
@@ -24,7 +25,7 @@ const server = createServer(async (req, res) => {
     }
 
     try {
-        const report = await getWeatherReport(postcode);
+        const report = await getWeatherReport(postcode, hours);
         res.writeHead(200, { "Content-Type": "application/json" });
         res.end(JSON.stringify(report));
     } catch (error: any) {

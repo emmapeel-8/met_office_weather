@@ -14,8 +14,8 @@ export type WeatherReport = {
 
 const BASE_URL = "http://localhost:3001";
 
-export const getWeatherReport = async (postcode: string): Promise<WeatherReport> => {
-    const response = await fetch(`${BASE_URL}/weather?postcode=${encodeURIComponent(postcode)}`);
+export const getWeatherReport = async (postcode: string, hours: number): Promise<WeatherReport> => {
+    const response = await fetch(`${BASE_URL}/weather?postcode=${encodeURIComponent(postcode)}&hours=${encodeURIComponent(hours)}`);
     const data = await response.json();
 
     if (!response.ok) {
