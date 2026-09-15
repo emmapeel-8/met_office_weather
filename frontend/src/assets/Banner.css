@@ -1,6 +1,40 @@
-.banner {
+body {
     --sky-top: #4aa8ff;
     --sky-bottom: #bfe3ff;
+
+    min-height: 100svh;
+    background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 100%);
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        --sky-top: #0b1330;
+        --sky-bottom: #2a3a63;
+    }
+}
+
+#cloudy_sky {
+    --sky-top: #7780a1;
+    --sky-bottom: #6e6e6e;
+}
+
+#stormy_sky {
+    --sky-top: #040e2b;
+    --sky-bottom: #162349;
+}
+
+#rainy_sky {
+    --sky-top: #7f94df;
+    --sky-bottom: #6e6e6e;
+}
+
+#snowy_sky {
+    --sky-top: #ededed;
+    --sky-bottom: #c5c5c5;
+}
+
+
+.banner {
     --sun: #ffd166;
     --cloud: #ffffff;
     --cloud-shadow: rgba(20, 40, 70, 0.15);
@@ -12,14 +46,11 @@
     justify-content: center;
     min-height: 220px;
     padding: 32px 16px;
-    background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 100%);
     isolation: isolate;
 }
 
 @media (prefers-color-scheme: dark) {
     .banner {
-        --sky-top: #0b1330;
-        --sky-bottom: #2a3a63;
         --sun: #ffe9a8;
         --cloud: #cdd6e8;
         --cloud-shadow: rgba(0, 0, 0, 0.35);
@@ -61,24 +92,12 @@
     z-index: 1;
 }
 
-.banner-content {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    color: #fff;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+.banner-raindrop--heavy {
+    width: 3px;
+    height: 26px;
+    background: linear-gradient(180deg, rgba(220, 230, 255, 0), rgba(220, 230, 255, 0.95));
 }
 
-.banner-content h1 {
-    margin: 0;
-    color: #fff;
-}
-
-.banner-content p {
-    margin: 8px 0 0;
-    font-size: 16px;
-    opacity: 0.9;
-}
 
 @keyframes sun-pulse {
     0%, 100% {

@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Banner} from "./assets/Banner.tsx";
 import {getWeatherReport, type WeatherReport} from "./api/weather.ts";
+import "./App.css"
 
 const cellStyle: React.CSSProperties = { padding: "8px 16px", textAlign: "center" };
 
@@ -9,6 +10,7 @@ function App(): React.ReactElement {
   const [hours, setHours] = useState<number>(3);
   const [report, setReport] = useState<WeatherReport | null>(null);
   const [error, setError] = useState<string>("");
+  const [significantWeatherCode, setSignificantWeatherCode] = useState<number>(1);
 
   async function formHandler(event: React.FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
@@ -17,6 +19,7 @@ function App(): React.ReactElement {
     try {
       const result = await getWeatherReport(postcode, hours);
       setReport(result);
+      setSignificantWeatherCode(result.forecast[0].significantWeatherCode);
       setError("");
     } catch (err: any) {
       setReport(null);
@@ -30,7 +33,11 @@ function App(): React.ReactElement {
     setHours(data.target.valueAsNumber)
   }
   return <>
-    <Banner />
+    <Banner significantWeatherCode={significantWeatherCode}></Banner>
+    <div className="banner-content">
+      <h1>Met Office Weather</h1>
+      <p>Live local forecasts, wherever you are</p>
+    </div>
     <form action="" onSubmit={formHandler}>
       <label htmlFor="postcodeInput"> Postcode: </label>
       <input type="text" id="postcodeInput" onChange={updatePostcode}/>
