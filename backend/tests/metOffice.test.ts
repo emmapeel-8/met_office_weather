@@ -12,8 +12,8 @@ test("fetchWeatherThreeHours returns weather data for a valid latitude and longi
             {
                 properties: {
                     timeSeries: [
-                        { time: "2026-09-14T11:00Z", screenTemperature: 20.5, probOfPrecipitation: 5 },
-                        { time: "2026-09-14T12:00Z", screenTemperature: 21.2, probOfPrecipitation: 10 },
+                        { time: "2026-09-14T11:00Z", screenTemperature: 20.5, probOfPrecipitation: 5, significantWeatherCode: 1 },
+                        { time: "2026-09-14T12:00Z", screenTemperature: 21.2, probOfPrecipitation: 10, significantWeatherCode: 7 },
                     ],
                 },
             },
@@ -23,8 +23,8 @@ test("fetchWeatherThreeHours returns weather data for a valid latitude and longi
     const result = await fetchWeatherThreeHours(51.5, -0.1);
 
     assert.deepEqual(result, [
-        { time: "2026-09-14T11:00Z", temperature: 20.5, probOfPrecipitation: 5 },
-        { time: "2026-09-14T12:00Z", temperature: 21.2, probOfPrecipitation: 10 },
+        { time: "2026-09-14T11:00Z", temperature: 20.5, probOfPrecipitation: 5, significantWeatherCode: 1 },
+        { time: "2026-09-14T12:00Z", temperature: 21.2, probOfPrecipitation: 10, significantWeatherCode: 7 },
     ]);
 });
 
